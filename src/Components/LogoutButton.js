@@ -1,21 +1,31 @@
-import React from 'react';
-import axios from 'axios';
+import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {SessionContext} from "./SessionContext";
 
-const LogoutButton = () => {
+function LogoutButton() {
+    const navigateFunction = useNavigate();
+    const { setSession } = useContext(SessionContext);
+
     const handleLogout = async () => {
         try {
-            await axios.post('/api/auth/logout');
-            // Perform any additional client-side cleanup or redirection
+            const response = await fetch('http://localhost:8080/api/auth/logout', {
+                method: 'POST',
+                credentials: 'include',
+            });
+
+            if (response.ok) {
+                setSession(null); // Clear the session in the context
+                navigateFunction('/login'); // Redirect to the login page
+            } else {
+                // Handle logout failure
+                // Show an error message or perform any necessary actions
+            }
         } catch (error) {
-            // Handle error
+            // Handle network or other errors
         }
     };
 
-    return (
-        <button onClick={handleLogout} className="logout-button">
-            Logout
-        </button>
-    );
-};
+    return <button onClick={handleLogout}>Logout</button>;
+}
 
 export default LogoutButton;
