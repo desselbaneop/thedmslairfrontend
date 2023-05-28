@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {api} from "../API/api";
 
 const RegistrationForm = () => {
     const [username, setUsername] = useState('');
@@ -10,23 +11,16 @@ const RegistrationForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const userData = {
-            username,
-            email,
-            password,
-            role: ['user']
-        };
-
         try {
-            const response = await fetch('http://127.0.0.1:8080/api/auth/signup', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(userData)
-            });
+            const response = await api.auth.signup({
+                username,
+                email,
+                password,
+                role: ['user']
+            })
 
-            if (response.ok) {
+            if (response.status <= 300) {
+                console.log(response)
                 // Registration successful
                 setSuccessMessage('Registration successful!'); // Set success message
                 setErrorMessage(''); // Clear error message

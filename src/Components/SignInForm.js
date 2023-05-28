@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, {useContext, useState} from 'react';
+import {SessionContext} from "./SessionContext";
+import {useNavigate} from "react-router-dom";
 
 const SignInForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const { setSession } = useContext(SessionContext);
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -15,7 +19,7 @@ const SignInForm = () => {
         };
 
         try {
-            const response = await fetch('http://127.0.0.1:8080/api/auth/signin', {
+            const response = await fetch('/auth/signin', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -26,9 +30,11 @@ const SignInForm = () => {
             if (response.ok) {
                 // Sign-in successful
                 const data = await response.json();
+                setSession(true); // Clear the session in the context
                 sessionStorage.setItem('accessToken', data.accessToken);
-                setSuccessMessage('Login successful!'); // Set success message
+                setSuccessMessage('Login successful! '+sessionStorage.getItem('accessToken')); // Set success message
                 setErrorMessage(''); // Clear error message
+                navigate('/profile');
                 // Redirect to the desired page or handle the success accordingly
             } else {
                 // Sign-in failed

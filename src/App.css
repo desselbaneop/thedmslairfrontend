@@ -123,3 +123,15 @@ button:hover {
 .logout-button:hover {
   background-color: #9a7b91;
 }
+
+.logout-message {
+  background-color: #f0f0f0;
+  padding: 12px;
+  border-radius: 4px;
+  margin-top: 12px;
+}
+
+.logout-message p {
+  color: #333333;
+  font-weight: bold;
+}
