@@ -16,8 +16,10 @@ const RegistrationForm = () => {
                 username,
                 email,
                 password,
-                role: ['user']
+                role: ["user"]
             })
+
+            debugger
 
             if (response.status <= 300) {
                 console.log(response)
