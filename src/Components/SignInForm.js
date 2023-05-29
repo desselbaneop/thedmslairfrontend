@@ -1,15 +1,17 @@
-import React, {useContext, useState} from 'react';
-import {SessionContext} from "./SessionContext";
+import React, {useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import {api} from "../API/api";
+import {useAtom} from "jotai";
+import {userState} from "../State/user";
 
 const SignInForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const { setSession } = useContext(SessionContext);
     const navigate = useNavigate();
+
+    const [, setUser] = useAtom(userState)
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -23,12 +25,12 @@ const SignInForm = () => {
             const response = await api.auth.signin(userData);
 
             if (response.ok) {
+
                 // Sign-in successful
                 const data = await response.json();
                 console.log(data)
-                setSession(true); // Clear the session in the context
-                sessionStorage.setItem('accessToken', data.accessToken);
-                sessionStorage.setItem('userId', data.userId)
+                setUser(data)
+                localStorage.setItem('accessToken', data.accessToken);
                 setSuccessMessage(`Login successful! Token: ${sessionStorage.getItem('accessToken')}, ${sessionStorage.getItem('userId')} `); // Set success message
                 setErrorMessage(''); // Clear error message
                 navigate('/profile');
