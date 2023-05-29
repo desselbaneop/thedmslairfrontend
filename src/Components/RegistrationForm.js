@@ -11,18 +11,17 @@ const RegistrationForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        const userData = {
+            username,
+            email,
+            password,
+            role: ['user']
+        };
+
         try {
-            const response = await api.auth.signup({
-                username,
-                email,
-                password,
-                role: ["user"]
-            })
+            const response = await api.auth.signup(userData);
 
-            debugger
-
-            if (response.status <= 300) {
-                console.log(response)
+            if (response.ok) {
                 // Registration successful
                 setSuccessMessage('Registration successful!'); // Set success message
                 setErrorMessage(''); // Clear error message
