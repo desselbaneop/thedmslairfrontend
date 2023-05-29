@@ -15,7 +15,7 @@ const RegistrationForm = () => {
             username,
             email,
             password,
-            role: ['user']
+            // role: ['user']
         };
 
         try {

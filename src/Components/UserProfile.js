@@ -1,19 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {useAtom} from "jotai";
 import {userState} from "../State/user";
 import {getUserToken} from "../Utils/localStorage";
+import {api} from "../API/api";
+import UserCampaigns from "./UserCampaigns";
+import UserCharacters from "./UserCharacters";
+import {useNavigate} from "react-router-dom";
 
 function UserProfile() {
-    const [user, setUser] = useAtom(userState);
+    const [user,] = useAtom(userState);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     // Fetch user data from the API using the session or access token
     const fetchUser = async () => {
         try {
-            const response = await fetch(`/api/users/${user.id}`);
+            const response = await api.user.getUserInfo(user.id);
             if (response.ok) {
-                const userData = await response.json();
-                setUser(userData);
+                console.info('User data fetched successfully:', response.status);
             } else {
                 // Handle error response
                 console.error('Failed to fetch user data:', response.status);
@@ -26,9 +30,13 @@ function UserProfile() {
         }
     };
 
+    const handleDashboard = () => {
+        navigate('/dashboard')
+    };
+
     useEffect(() => {
         fetchUser()
-    }, []);
+    });
 
     if (!getUserToken()) {
         return <div>Please log in to view the user profile.</div>;
@@ -49,18 +57,13 @@ function UserProfile() {
                 <strong>Username:</strong> {user.username}
             </p>
             <p>
-                <strong>Email:</strong> {user.email}
+                <strong>Role:</strong> {user.roles}
             </p>
-            <h3>Campaigns</h3>
-            {/*{user.campaignsParticipant.length > 0 ? (*/}
-            {/*    <ul>*/}
-            {/*        {user.campaignsParticipant.map(campaign => (*/}
-            {/*            <li key={campaign.id}>{campaign.name}</li>*/}
-            {/*        ))}*/}
-            {/*    </ul>*/}
-            {/*) : (*/}
-            {/*    <p>No campaigns found.</p>*/}
-            {/*)}*/}
+            <UserCampaigns/>
+            <UserCharacters/>
+            <div>
+                <button onClick={handleDashboard}>Jump to the dashboard</button>
+            </div>
         </div>
     );
 }

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import LogoutMessage from "./LogoutMessage";
 import {useAtom} from "jotai";
 import {userState} from "../State/user";
+import {api} from "../API/api";
 
 function LogoutButton() {
     const [showMessage, setShowMessage] = useState(false);
@@ -11,20 +12,13 @@ function LogoutButton() {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch('http://localhost:8080/api/auth/logout', {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`, // Include the JWT token in the header
-                }
-            });
+            const response = await api.auth.logout()
 
             if (response.ok) {
                 setUser(null)
                 console.log('Logout successful'); // Indicate successful logout in the console
                 setShowMessage(true); // Show the pop-up message
-                navigate('/login'); // Redirect to the login page
-
+                navigate('/'); // Redirect to the login page
                 localStorage.removeItem('accessToken')
             } else {
                 console.log('Logout failed'); // Indicate logout failure in the console

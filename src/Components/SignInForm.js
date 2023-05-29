@@ -26,10 +26,8 @@ const SignInForm = () => {
             const response = await api.auth.signin(userData);
 
             if (response.ok) {
-
                 // Sign-in successful
                 const data = await response.json();
-                console.log(data)
                 setUser(data)
                 setUserToken(data.accessToken)
                 setSuccessMessage('Login successful!'); // Set success message

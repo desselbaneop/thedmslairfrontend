@@ -1,8 +1,8 @@
 import {BASE_URL} from "./api";
+import {getUserToken} from "../Utils/localStorage";
 
 export const auth = {
     signup: (data) => {
-        console.log(data)
         return fetch(`${BASE_URL}/auth/signup`, {
             method: 'POST',
             headers: {
@@ -12,7 +12,6 @@ export const auth = {
         })
     },
     signin: (data) => {
-        console.log(data)
         return fetch(`${BASE_URL}/auth/signin`, {
             method: 'POST',
             headers: {
@@ -20,5 +19,14 @@ export const auth = {
             },
             body: JSON.stringify(data)
         })
+    },
+    logout: () => {
+        return fetch(`${BASE_URL}/auth/logout`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                Authorization: `Bearer ${getUserToken()}`, // Include the JWT token in the header
+            }
+        });
     }
 }
