@@ -1,6 +1,5 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
-import { SessionContext } from "./SessionContext";
 import LogoutMessage from "./LogoutMessage";
 import {useAtom} from "jotai";
 import {userState} from "../State/user";
@@ -8,7 +7,6 @@ import {userState} from "../State/user";
 function LogoutButton() {
     const [showMessage, setShowMessage] = useState(false);
     const navigate = useNavigate();
-    const { setSession } = useContext(SessionContext);
     const [, setUser] = useAtom(userState)
 
     const handleLogout = async () => {
@@ -17,14 +15,13 @@ function LogoutButton() {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
-                    Authorization: `Bearer ${sessionStorage.getItem('accessToken')}`, // Include the JWT token in the header
+                    Authorization: `Bearer ${localStorage.getItem('accessToken')}`, // Include the JWT token in the header
                 }
             });
 
             if (response.ok) {
                 setUser(null)
                 console.log('Logout successful'); // Indicate successful logout in the console
-                setSession(null); // Clear the session in the context
                 setShowMessage(true); // Show the pop-up message
                 navigate('/login'); // Redirect to the login page
 

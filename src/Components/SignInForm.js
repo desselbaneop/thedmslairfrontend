@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 import {api} from "../API/api";
 import {useAtom} from "jotai";
 import {userState} from "../State/user";
+import {setUserToken} from "../Utils/localStorage";
 
 const SignInForm = () => {
     const [username, setUsername] = useState('');
@@ -30,8 +31,8 @@ const SignInForm = () => {
                 const data = await response.json();
                 console.log(data)
                 setUser(data)
-                localStorage.setItem('accessToken', data.accessToken);
-                setSuccessMessage(`Login successful! Token: ${sessionStorage.getItem('accessToken')}, ${sessionStorage.getItem('userId')} `); // Set success message
+                setUserToken(data.accessToken)
+                setSuccessMessage('Login successful!'); // Set success message
                 setErrorMessage(''); // Clear error message
                 navigate('/profile');
                 // Redirect to the desired page or handle the success accordingly
