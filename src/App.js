@@ -8,6 +8,7 @@ import HomePage from "./Components/HomePage"
 import {useAtom} from "jotai";
 import {userState} from "./State/user";
 import DashBoard from "./Components/DashBoard";
+import CharacterCreation from "./Components/CharacterCreation";
 
 function App() {
     const [user,] = useAtom(userState)
@@ -25,6 +26,7 @@ function App() {
                         <>
                             <Route exact path="/profile" element={<UserProfile/>}/>
                             <Route path="/dashboard" element={<DashBoard/>}/>
+                            <Route path="/character-creation" element={<CharacterCreation/>}/>
                         </>
                     )}
                 </Routes>
