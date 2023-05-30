@@ -14,7 +14,6 @@ function UserCampaigns() {
         try {
             const response = await api.user.getCampaignsByUserId(user.id);
 
-
             if (response.ok) {
                 const campaigns = await response.json();
                 setCampaigns(campaigns);
@@ -48,7 +47,7 @@ function UserCampaigns() {
             {campaigns.length > 0 ? (
                 <ul>
                     {campaigns.map(campaign => (
-                        <li key={campaign.id}>{campaign.name}</li>
+                        <li key={campaign.id} > {campaign.name}</li>
                     ))}
                 </ul>
             ) : (

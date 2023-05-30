@@ -10,6 +10,7 @@ import {userState} from "./State/user";
 import DashBoard from "./Components/DashBoard";
 import CharacterCreation from "./Components/CharacterCreation";
 import CampaignCreation from "./Components/CampaignCreation";
+import CampaignPage from "./Components/CampaignPage";
 
 function App() {
     const [user,] = useAtom(userState)
@@ -29,6 +30,8 @@ function App() {
                             <Route path="/dashboard" element={<DashBoard/>}/>
                             <Route path="/character-creation" element={<CharacterCreation/>}/>
                             <Route path="/campaign-creation" element={<CampaignCreation/>}/>
+                            <Route path="/campaigns/:id" element={<CampaignPage />}/>
+                            {/*<Route path="/campaign-creation" element={<CampaignCreation/>}/>*/}
                         </>
                     )}
                 </Routes>

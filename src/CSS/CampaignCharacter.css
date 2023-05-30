@@ -1,0 +1,49 @@
+.campaign-character {
+    position: relative;
+    display: inline-block;
+    margin: 10px;
+}
+
+.character-image {
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s, filter 0.3s;
+    object-fit: cover;
+}
+
+.character-image:hover {
+    transform: scale(1.05);
+    filter: brightness(90%);
+    cursor: pointer;
+}
+
+.popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 4px;
+}
+
+.popup-content h2 {
+    margin-top: 0;
+}
+
+.popup-content p {
+    margin-bottom: 10px;
+}
+
+.popup-content button {
+    display: block;
+    margin-left: auto;
+}

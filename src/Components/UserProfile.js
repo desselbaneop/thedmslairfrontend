@@ -14,19 +14,23 @@ function UserProfile() {
 
     // Fetch user data from the API using the session or access token
     const fetchUser = async () => {
-        try {
-            const response = await api.user.getUserInfo(user.id);
-            if (response.ok) {
-                console.info('User data fetched successfully:', response.status);
-            } else {
-                // Handle error response
-                console.error('Failed to fetch user data:', response.status);
+        if (user){
+            try {
+                const response = await api.user.getUserInfo(user.id);
+                if (response.ok) {
+                    console.info('User data fetched successfully:', response.status);
+                } else {
+                    // Handle error response
+                    console.error('Failed to fetch user data:', response.status);
+                }
+            } catch (error) {
+                // Handle network or other errors
+                console.error('Error while fetching user data:', error);
+            } finally {
+                setLoading(false);
             }
-        } catch (error) {
-            // Handle network or other errors
-            console.error('Error while fetching user data:', error);
-        } finally {
-            setLoading(false);
+        }else{
+            navigate(`/`)
         }
     };
 

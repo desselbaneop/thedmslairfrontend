@@ -14,7 +14,6 @@ function UserCharacters() {
         try {
             const response = await api.user.getCharactersByUserId(user.id);
 
-
             if (response.ok) {
                 const characters = await response.json();
                 setCharacters(characters);

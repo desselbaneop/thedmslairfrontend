@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
 import { api } from '../API/api';
+import {useAtom} from "jotai/index";
+import {userState} from "../State/user";
 
 function CampaignCreation() {
+    const [user,] = useAtom(userState);
     const [campaignData, setCampaignData] = useState({
         name: '',
-        description: ''
+        description: '',
+        ownerId: ''
     });
 
     const handleChange = (event) => {
         const { name, value } = event.target;
         setCampaignData(prevData => ({
             ...prevData,
+            ownerId: user.id,
             [name]: value
         }));
     };

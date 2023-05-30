@@ -1,0 +1,54 @@
+/* Assuming you have a CSS file named CampaignPage.css */
+
+.character-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+}
+
+.campaign-character-placeholder {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: lightgray;
+    cursor: pointer;
+}
+
+.campaign-character-placeholder span {
+    font-size: 24px;
+}
+
+.popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 4px;
+}
+
+.popup-content h2 {
+    margin-top: 0;
+}
+
+.popup-content p {
+    margin-bottom: 20px;
+}
+
+.popup-content button {
+    display: block;
+    margin-left: auto;
+}

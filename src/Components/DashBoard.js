@@ -1,14 +1,14 @@
 import React, {useState} from 'react';
 import {useNavigate} from "react-router-dom";
+import JoinCampaignPopup from "./JoinCampaignPopup";
+import {useAtom} from "jotai";
+import {userState} from "../State/user";
+import ChooseCampaignPopup from "./ChooseCampaignPopup";
 
 const HomePage = () => {
     const navigate = useNavigate();
     const [joinCampaignPopup, setJoinCampaignPopup] = useState(false);
     const [chooseCampaignPopup, setChooseCampaignPopup] = useState(false);
-
-    const handleNavigateToLogin = () => {
-        navigate('/login')
-    };
 
     const handleNavigateToCampaignCreation = () => {
         navigate('/campaign-creation')
@@ -24,10 +24,6 @@ const HomePage = () => {
 
     const handleChooseCampaign = () => {
         setChooseCampaignPopup(true);
-    };
-
-    const handleCampaignSelection = (campaignId) => {
-        navigate(`/campaigns/${campaignId}`);
     };
 
     const handleCloseJoinCampaignPopup = () => {
@@ -61,15 +57,13 @@ const HomePage = () => {
             {joinCampaignPopup && (
                 <div className="popup-container">
                     <span onClick={handleCloseJoinCampaignPopup}>Close</span>
-                    {/* Popup content */}
-                    {/* ... */}
+                    <JoinCampaignPopup onClose={handleCloseJoinCampaignPopup}/>
                 </div>
             )}
             {chooseCampaignPopup && (
                 <div className="popup-container">
                     <span onClick={handleCloseChooseCampaignPopup}>Close</span>
-                    {/* Popup content */}
-                    {/* ... */}
+                    <ChooseCampaignPopup onClose={handleCloseChooseCampaignPopup} />
                 </div>
             )}
         </div>
