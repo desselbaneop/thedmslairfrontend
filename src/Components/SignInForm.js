@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import {api} from "../API/api";
 import {useAtom} from "jotai";
@@ -12,7 +12,13 @@ const SignInForm = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
-    const [, setUser] = useAtom(userState)
+    const [user, setUser] = useAtom(userState)
+
+    useEffect(() => {
+        if (user && user.id) {
+            navigate(`/profile/${user.id}`);
+        }
+    }, [user, navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -32,7 +38,7 @@ const SignInForm = () => {
                 setUserToken(data.accessToken)
                 setSuccessMessage('Login successful!'); // Set success message
                 setErrorMessage(''); // Clear error message
-                navigate('/profile');
+                navigate(`/profile/${user.id}`);
                 // Redirect to the desired page or handle the success accordingly
             } else {
                 // Sign-in failed
@@ -42,6 +48,7 @@ const SignInForm = () => {
         } catch (error) {
             // Network error
             setErrorMessage('An error occurred. Please check your network connection.'); // Set error message
+            console.log(error)
         }
     };
 

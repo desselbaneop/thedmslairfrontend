@@ -1,8 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useNavigate} from "react-router-dom";
 
 const HomePage = () => {
     const navigate = useNavigate();
+    const [joinCampaignPopup, setJoinCampaignPopup] = useState(false);
+    const [chooseCampaignPopup, setChooseCampaignPopup] = useState(false);
 
     const handleNavigateToLogin = () => {
         navigate('/login')
@@ -16,10 +18,25 @@ const HomePage = () => {
         navigate('/character-creation')
     };
 
-    /*    const handleNavigateToJoinCampaign = () => {
-            navigate('/campaign-creation')
-        };*/
+    const handleJoinCampaign = () => {
+        setJoinCampaignPopup(true);
+    };
 
+    const handleChooseCampaign = () => {
+        setChooseCampaignPopup(true);
+    };
+
+    const handleCampaignSelection = (campaignId) => {
+        navigate(`/campaigns/${campaignId}`);
+    };
+
+    const handleCloseJoinCampaignPopup = () => {
+        setJoinCampaignPopup(false);
+    };
+
+    const handleCloseChooseCampaignPopup = () => {
+        setChooseCampaignPopup(false);
+    };
 
     return (
         <div className="home">
@@ -32,13 +49,29 @@ const HomePage = () => {
                     <button onClick={handleNavigateToCharacterCreation}>Create a character</button>
                 </div>
                 <div className="home-functional-button">
-                    {/*<button onClick={handleNavigateToCampaignCreation}>Join an existing campaign</button>*/}
+                    <button onClick={handleJoinCampaign}>Join Campaign</button>
+                </div>
+                <div className="home-functional-button">
+                    <button onClick={handleChooseCampaign}>Choose Campaign</button>
                 </div>
                 <p className="home-description">Please join us in the DMS Lair and discover the world of Lorem Ipsum!</p>
-                <div className="home-button">
-                    <button onClick={handleNavigateToLogin}>Get Started</button>
-                </div>
             </div>
+
+
+            {joinCampaignPopup && (
+                <div className="popup-container">
+                    <span onClick={handleCloseJoinCampaignPopup}>Close</span>
+                    {/* Popup content */}
+                    {/* ... */}
+                </div>
+            )}
+            {chooseCampaignPopup && (
+                <div className="popup-container">
+                    <span onClick={handleCloseChooseCampaignPopup}>Close</span>
+                    {/* Popup content */}
+                    {/* ... */}
+                </div>
+            )}
         </div>
     );
 };
