@@ -1,48 +1,55 @@
-import React, {useEffect, useState} from 'react';
-import {useAtom} from "jotai";
-import {userState} from "../State/user";
-import {getUserToken} from "../Utils/localStorage";
-import {api} from "../API/api";
+import React, { useEffect, useState } from 'react';
+import { useAtom } from "jotai";
+import { userState } from "../State/user";
+import { getAccessToken } from "../Utils/tokenStorage";
+import { api } from "../API/api";
 import UserCampaigns from "./UserCampaigns";
 import UserCharacters from "./UserCharacters";
-import {useNavigate} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { getFetchedUser, getFetchingId, setFetchedUser } from "../Utils/localStorage";
 
 function UserProfile() {
-    const [user,] = useAtom(userState);
+    const { id } = useParams();
+    const [user, setUser] = useAtom(userState);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
-    // Fetch user data from the API using the session or access token
     const fetchUser = async () => {
-        if (user){
-            try {
-                const response = await api.user.getUserInfo(user.id);
-                if (response.ok) {
-                    console.info('User data fetched successfully:', response.status);
-                } else {
-                    // Handle error response
-                    console.error('Failed to fetch user data:', response.status);
-                }
-            } catch (error) {
-                // Handle network or other errors
-                console.error('Error while fetching user data:', error);
-            } finally {
-                setLoading(false);
+        try {
+            const response = await api.user.getUserInfo(getFetchingId());
+            if (response.ok) {
+                const data = await response.json();
+                setUser(data);
+                setFetchedUser(JSON.stringify(data));
+                console.info('User data fetched successfully.');
+            } else {
+                console.error('Failed to fetch user data:', response.status);
             }
-        }else{
-            navigate(`/`)
+        } catch (error) {
+            console.error('Error while fetching user data:', error);
+        } finally {
+            setLoading(false);
         }
     };
 
+    useEffect(() => {
+        const storedUser = getFetchedUser();
+        if (storedUser) {
+            const parsedUser = JSON.parse(storedUser);
+            if (parsedUser.id === id) {
+                setUser(parsedUser);
+                setLoading(false);
+                return;
+            }
+        }
+        fetchUser();
+    }, [id, setUser]);
+
     const handleDashboard = () => {
-        navigate('/dashboard')
+        navigate('/dashboard');
     };
 
-    useEffect(() => {
-        fetchUser()
-    });
-
-    if (!getUserToken()) {
+    if (!getAccessToken()) {
         return <div>Please log in to view the user profile.</div>;
     }
 
@@ -50,7 +57,7 @@ function UserProfile() {
         return <div>Loading user profile...</div>;
     }
 
-    if (!user) {
+    if (!user || !user.id) {
         return <div>Failed to fetch user profile.</div>;
     }
 
@@ -58,13 +65,31 @@ function UserProfile() {
         <div>
             <h2>User Profile</h2>
             <p>
+                <strong>ID:</strong> {user.id}
+            </p>
+            <p>
                 <strong>Username:</strong> {user.username}
             </p>
             <p>
-                <strong>Role:</strong> {user.roles}
+                <strong>Email:</strong> {user.email}
             </p>
-            <UserCampaigns/>
-            <UserCharacters/>
+            <p>
+                <strong>Roles:</strong>
+                {user.roles ? (
+                    <ul>
+                        {user.roles.map(role => (
+                            <li key={role.id}>{role.name}</li>
+                        ))}
+                    </ul>
+                ) : (
+                    <span>No roles assigned</span>
+                )}
+            </p>
+            <p>
+                <strong>Email Verified:</strong> {user.isEmailVerified ? "Yes" : "No"}
+            </p>
+            <UserCampaigns />
+            <UserCharacters />
             <div>
                 <button onClick={handleDashboard}>Jump to the dashboard</button>
             </div>

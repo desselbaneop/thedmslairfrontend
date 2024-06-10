@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import {api} from "../API/api";
+import {userState} from "../State/user";
 
 const RegistrationForm = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [role, setRole] = useState(['mod', 'user'])
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -15,6 +17,7 @@ const RegistrationForm = () => {
             username,
             email,
             password,
+            role,
         };
 
         try {

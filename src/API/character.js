@@ -1,5 +1,6 @@
 import {BASE_URL} from "./api";
-import {getUserToken} from "../Utils/localStorage";
+import {getAccessToken} from "../Utils/tokenStorage";
+import axiosInstance from "./axiosInterface";
 
 export const character = {
     create: (data) => {
@@ -8,7 +9,7 @@ export const character = {
             method: 'POST',
             credentials: 'include',
             headers: {
-                Authorization: `Bearer ${getUserToken()}`, // Include the JWT token in the header
+                Authorization: `Bearer ${getAccessToken()}`, // Include the JWT token in the header
                 'Content-Type': 'application/json', // Set the content type to JSON
             },
             body: JSON.stringify(data),

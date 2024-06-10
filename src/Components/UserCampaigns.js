@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useAtom} from "jotai";
 import {userState} from "../State/user";
-import {getUserToken} from "../Utils/localStorage";
+import {getAccessToken} from "../Utils/tokenStorage";
 import {api} from "../API/api";
 
 function UserCampaigns() {
@@ -21,7 +21,7 @@ function UserCampaigns() {
                 console.error('Failed to fetch user\'s campaigns:', response.status);
             }
         } catch (error) {
-            console.error('Error while fetching user\' campaigns:', error);
+            console.error('Error while fetching user\'s campaigns:', error);
         } finally {
             setLoading(false);
         }
@@ -31,7 +31,7 @@ function UserCampaigns() {
         fetchUserCampaigns()
     });
 
-    if (!getUserToken()) {
+    if (!getAccessToken()) {
         return <div>Please log in to view the user profile.</div>;
     }
     if (loading) {

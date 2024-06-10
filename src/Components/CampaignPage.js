@@ -44,7 +44,7 @@ const CampaignPage = () => {
                 console.error('Failed to fetch user\'s characters:', response.status);
             }
         } catch (error) {
-            console.error('Error while fetching user\' characters:', error);
+            console.error('Error while fetching user\'s characters:', error);
         }
     };
 

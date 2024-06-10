@@ -3,7 +3,7 @@ import {user} from "./user";
 import {character} from "./character";
 import {campaign} from "./campaign";
 
-export const BASE_URL = 'http://127.0.0.1:8080/api'
+export const BASE_URL = 'http://127.0.0.1:8081/api'
 
 export const api = {
     auth: auth,

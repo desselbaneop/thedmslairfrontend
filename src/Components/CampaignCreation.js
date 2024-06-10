@@ -1,38 +1,56 @@
 import React, { useState } from 'react';
 import { api } from '../API/api';
-import {useAtom} from "jotai/index";
-import {userState} from "../State/user";
+import { useAtom } from "jotai/index";
+import { userState } from "../State/user";
+import { v4 as uuidv4 } from "uuid";
 
 function CampaignCreation() {
     const [user,] = useAtom(userState);
     const [campaignData, setCampaignData] = useState({
+        id: '',
         name: '',
         description: '',
-        ownerId: ''
+        characters: [],
+        campaignUsers: [],
+        coverImage: null,
+        isPublic: false
     });
+    const [coverImage, setCoverImage] = useState(null)
 
     const handleChange = (event) => {
-        const { name, value } = event.target;
+        const { name, value, type, checked } = event.target;
         setCampaignData(prevData => ({
             ...prevData,
-            ownerId: user.id,
-            [name]: value
+            id: uuidv4(),
+            [name]: type === 'checkbox' ? checked : value
         }));
+    };
+
+    const handleFileChange = (event) => {
+        setCoverImage(event.target.files[0])
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        const formData = new FormData();
+        formData.append('request', new Blob([JSON.stringify(campaignData)], { type: 'application/json' }));
+        formData.append('art', coverImage);
+
         try {
-            const response = await api.campaign.create(campaignData);
+            const response = await api.campaign.create(formData);
             if (response.ok) {
                 // Campaign created successfully
                 console.log('Campaign created:', response.data);
                 // Reset the form
                 setCampaignData({
+                    id: '',
                     name: '',
-                    description: ''
+                    description: '',
+                    characters: [],
+                    campaignUsers: [],
                 });
+                setCoverImage(null);
             } else {
                 // Handle error response
                 console.error('Failed to create campaign:', response.status);
@@ -62,6 +80,23 @@ function CampaignCreation() {
                     id="description"
                     name="description"
                     value={campaignData.description}
+                    onChange={handleChange}
+                />
+
+                <label htmlFor="coverImage">Cover Image:</label>
+                <input
+                    type="file"
+                    id="coverImage"
+                    name="coverImage"
+                    onChange={handleFileChange}
+                />
+
+                <label htmlFor="isPublic">Public:</label>
+                <input
+                    type="checkbox"
+                    id="isPublic"
+                    name="isPublic"
+                    checked={campaignData.isPublic}
                     onChange={handleChange}
                 />
 

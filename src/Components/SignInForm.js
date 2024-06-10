@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import {useNavigate} from "react-router-dom";
-import {api} from "../API/api";
-import {useAtom} from "jotai";
-import {userState} from "../State/user";
-import {setUserToken} from "../Utils/localStorage";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
+import { api } from "../API/api";
+import { useAtom } from "jotai";
+import { userState } from "../State/user";
+import {setFetchingId} from "../Utils/localStorage";
 
 const SignInForm = () => {
     const [username, setUsername] = useState('');
@@ -12,43 +12,30 @@ const SignInForm = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
-    const [user, setUser] = useAtom(userState)
-
-    useEffect(() => {
-        if (user && user.id) {
-            navigate(`/profile/${user.id}`);
-        }
-    }, [user, navigate]);
+    const [user, setUser] = useAtom(userState);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const userData = {
             username,
-            password
+            password,
         };
 
         try {
-            const response = await api.auth.signin(userData);
+            const data = await api.auth.signin(userData);
 
-            if (response.ok) {
-                // Sign-in successful
-                const data = await response.json();
-                setUser(data)
-                setUserToken(data.accessToken)
-                setSuccessMessage('Login successful!'); // Set success message
-                setErrorMessage(''); // Clear error message
-                navigate(`/profile/${user.id}`);
-                // Redirect to the desired page or handle the success accordingly
-            } else {
-                // Sign-in failed
-                setSuccessMessage(''); // Set success message
-                setErrorMessage('Invalid username or password. Please try again.'); // Set error message
-            }
+            // Sign-in successful
+            setUser(data);
+            setSuccessMessage('Login successful!');
+            setErrorMessage('');
+            setFetchingId(data.userResponse.id)
+            navigate(`/profile/${data.userResponse.id}`);
         } catch (error) {
-            // Network error
-            setErrorMessage('An error occurred. Please check your network connection.'); // Set error message
-            console.log(error)
+            // Handle sign-in failure
+            setSuccessMessage('');
+            setErrorMessage('Invalid username or password. Please try again.');
+            console.log('Error during sign-in:', error);
         }
     };
 

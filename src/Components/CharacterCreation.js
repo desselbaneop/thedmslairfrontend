@@ -3,29 +3,40 @@ import { useAtom } from 'jotai';
 import { userState } from '../State/user';
 import { api } from '../API/api';
 import '../CSS/CharacterCreation.css';
-
+import { v4 as uuidv4 } from "uuid";
 
 function CharacterCreation() {
     const [user,] = useAtom(userState);
     const [characterData, setCharacterData] = useState({
+        id: '',
         name: '',
         description: '',
-        backstory: '',
-        imgURL: '',
-        userId: '',
+        characteristics: [],
+        stats: [],
+        coverImage: null,
+        isPublic: false,
     });
+    const [coverImage, setCoverImage] = useState(null)
 
     const handleChange = (event) => {
-        const { name, value } = event.target;
+        const { name, value, type, checked } = event.target;
         setCharacterData(prevData => ({
             ...prevData,
-            userId: user.id,
-            [name]: value
+            id: uuidv4(),
+            [name]: type === 'checkbox' ? checked : value
         }));
+    };
+
+    const handleFileChange = (event) => {
+        setCoverImage(event.target.files[0])
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        const formData = new FormData();
+        formData.append('request', new Blob([JSON.stringify(characterData)], { type: 'application/json' }));
+        formData.append('art', coverImage);
 
         try {
             const response = await api.character.create(characterData);
@@ -64,22 +75,23 @@ function CharacterCreation() {
                     onChange={handleChange}
                 />
 
-                <label htmlFor="backstory">Backstory:</label>
-                <textarea
-                    id="backstory"
-                    name="backstory"
-                    value={characterData.backstory}
+                <label htmlFor="coverImage">Cover Image:</label>
+                <input
+                    type="file"
+                    id="coverImage"
+                    name="coverImage"
+                    onChange={handleFileChange}
+                />
+
+                <label htmlFor="isPublic">Public:</label>
+                <input
+                    type="checkbox"
+                    id="isPublic"
+                    name="isPublic"
+                    checked={characterData.isPublic}
                     onChange={handleChange}
                 />
 
-                <label htmlFor="imgURL">Image URL:</label>
-                <input
-                    type="text"
-                    id="imgURL"
-                    name="imgURL"
-                    value={characterData.imgURL}
-                    onChange={handleChange}
-                />
                 <button type="submit">Create</button>
             </form>
         </div>

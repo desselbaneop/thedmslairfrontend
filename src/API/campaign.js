@@ -1,25 +1,27 @@
 import {BASE_URL} from "./api";
-import {getUserToken} from "../Utils/localStorage";
+import {getAccessToken} from "../Utils/tokenStorage";
+import axios from "axios";
+import axiosInstance from "./axiosInterface";
 
 export const campaign = {
     create: (data) => {
         console.log(data)
-        return fetch(`${BASE_URL}/campaign`, {
+        return axiosInstance.post('/campaign', data)
+/*        return fetch(`${BASE_URL}/campaign`, {
             method: 'POST',
             credentials: 'include',
             headers: {
-                Authorization: `Bearer ${getUserToken()}`, // Include the JWT token in the header
-                'Content-Type': 'application/json', // Set the content type to JSON
+                Authorization: `Bearer ${getAccessToken()}`, // Include the JWT token in the header
             },
-            body: JSON.stringify(data),
-        })
+            body: data,
+        })*/
     },
-    join: (campaignId, userId) => {
-        return fetch(`${BASE_URL}/campaign/${campaignId}/users?playerId=${userId}`, {
-            method: 'POST',
+    join: (campaignId) => {
+        return fetch(`${BASE_URL}/campaign/joinCampaign/${campaignId}`, {
+            method: 'GET',
             credentials: 'include',
             headers: {
-                Authorization: `Bearer ${getUserToken()}`, // Include the JWT token in the header
+                Authorization: `Bearer ${getAccessToken()}`, // Include the JWT token in the header
                 'Content-Type': 'application/json', // Set the content type to JSON
             },
         })
@@ -29,7 +31,7 @@ export const campaign = {
             method: 'GET',
             credentials: 'include',
             headers: {
-                Authorization: `Bearer ${getUserToken()}`, // Include the JWT token in the header
+                Authorization: `Bearer ${getAccessToken()}`, // Include the JWT token in the header
                 'Content-Type': 'application/json', // Set the content type to JSON
             },
         })

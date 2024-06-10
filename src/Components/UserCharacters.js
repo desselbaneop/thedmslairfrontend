@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useAtom} from "jotai";
 import {userState} from "../State/user";
-import {getUserToken} from "../Utils/localStorage";
+import {getAccessToken} from "../Utils/tokenStorage";
 import {api} from "../API/api";
 
 function UserCharacters() {
@@ -10,7 +10,7 @@ function UserCharacters() {
     const [characters, setCharacters] = useState([])
 
     // Fetch user data from the API using the session or access token
-    const fetchUserCampaigns = async () => {
+    const fetchUserCharacters = async () => {
         try {
             const response = await api.user.getCharactersByUserId(user.id);
 
@@ -21,17 +21,17 @@ function UserCharacters() {
                 console.error('Failed to fetch user\'s characters:', response.status);
             }
         } catch (error) {
-            console.error('Error while fetching user\' characters:', error);
+            console.error('Error while fetching user\'s characters:', error);
         } finally {
             setLoading(false);
         }
     };
 
     useEffect(() => {
-        fetchUserCampaigns()
+        fetchUserCharacters()
     });
 
-    if (!getUserToken()) {
+    if (!getAccessToken()) {
         return <div>Please log in to view the user profile.</div>;
     }
     if (loading) {
