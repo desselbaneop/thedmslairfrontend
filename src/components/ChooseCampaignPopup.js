@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { useAtom } from 'jotai';
-import { userState } from '../State/user';
 import { api } from '../API/api';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const ChooseCampaignPopup = ({ onClose }) => {
-    const [user,] = useAtom(userState);
+    const user = useSelector(state => state.user.user);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [campaigns, setCampaigns] = useState([]);
 
     useEffect(() => {
         fetchCampaigns();
-    });
+    }, []); // Добавлен пустой массив зависимостей
 
     const fetchCampaigns = async () => {
         try {
@@ -31,7 +30,7 @@ const ChooseCampaignPopup = ({ onClose }) => {
     };
 
     const handleCampaignSelection = (campaignId) => {
-        console.log(campaignId)
+        console.log(campaignId);
         navigate(`/campaigns/${campaignId}`);
         onClose();
     };
@@ -47,7 +46,7 @@ const ChooseCampaignPopup = ({ onClose }) => {
                         {campaigns.length > 0 ? (
                             <ul>
                                 {campaigns.map((campaign) => (
-                                    <li key={campaign.id} onClick={() => handleCampaignSelection(campaign.id)}>
+                                    <li key={campaign.campaignId} onClick={() => handleCampaignSelection(campaign.campaignId)}>
                                         {campaign.name}
                                     </li>
                                 ))}

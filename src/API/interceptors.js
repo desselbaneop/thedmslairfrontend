@@ -1,6 +1,6 @@
 // src/API/interceptors.js
 import axios from 'axios';
-import { getRefreshToken, getAccessToken, clearTokens } from "../Utils/tokenStorage";
+import { getRefreshToken, getAccessToken, clearSession } from "../Utils/tokenStorage";
 
 export const setupInterceptors = (axiosInstance) => {
     axiosInstance.interceptors.request.use(
@@ -29,7 +29,7 @@ export const setupInterceptors = (axiosInstance) => {
                     axios.defaults.headers.common['Authorization'] = `Bearer ${getAccessToken()}`;
                     return axiosInstance(originalRequest);
                 } catch (err) {
-                    clearTokens();
+                    clearSession();
                     return Promise.reject(err);
                 }
             }

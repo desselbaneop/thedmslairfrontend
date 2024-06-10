@@ -1,29 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { useAtom } from "jotai";
-import { userState } from "../State/user";
-import { getAccessToken } from "../Utils/tokenStorage";
+import { useSelector, useDispatch } from 'react-redux';
+import { useParams, useNavigate } from 'react-router-dom';
 import { api } from "../API/api";
+import { getAccessToken } from "../Utils/tokenStorage";
+import { getFetchedUser, setFetchedUser } from "../Utils/localStorage";
+import { setUser } from '../slices/userSlice';
 import UserCampaigns from "./UserCampaigns";
 import UserCharacters from "./UserCharacters";
-import { useNavigate, useParams } from "react-router-dom";
-import { getFetchedUser, getFetchingId, setFetchedUser } from "../Utils/localStorage";
 
 function UserProfile() {
     const { id } = useParams();
-    const [user, setUser] = useAtom(userState);
+    const user = useSelector(state => state.user.user);
+    const dispatch = useDispatch();
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
     const fetchUser = async () => {
         try {
-            const response = await api.user.getUserInfo(getFetchingId());
-            if (response.ok) {
-                const data = await response.json();
-                setUser(data);
-                setFetchedUser(JSON.stringify(data));
+            const response = await api.user.getUserInfo(id);
+
+            if (response) {
+                setFetchedUser(JSON.stringify(response));
                 console.info('User data fetched successfully.');
+                dispatch(setUser(response));
             } else {
-                console.error('Failed to fetch user data:', response.status);
+                console.error('Failed to fetch user data.');
             }
         } catch (error) {
             console.error('Error while fetching user data:', error);
@@ -37,13 +38,12 @@ function UserProfile() {
         if (storedUser) {
             const parsedUser = JSON.parse(storedUser);
             if (parsedUser.id === id) {
-                setUser(parsedUser);
                 setLoading(false);
                 return;
             }
         }
         fetchUser();
-    }, [id, setUser]);
+    }, [id, dispatch]);
 
     const handleDashboard = () => {
         navigate('/dashboard');

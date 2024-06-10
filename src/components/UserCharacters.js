@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {useAtom} from "jotai";
-import {userState} from "../State/user";
 import {getAccessToken} from "../Utils/tokenStorage";
 import {api} from "../API/api";
+import {useDispatch, useSelector} from "react-redux";
 
 function UserCharacters() {
-    const [user,] = useAtom(userState);
-    const [loading, setLoading] = useState(true);
+    const user = useSelector(state => state.user.user);
+    const dispatch = useDispatch();    const [loading, setLoading] = useState(true);
     const [characters, setCharacters] = useState([])
 
     // Fetch user data from the API using the session or access token
@@ -32,7 +31,7 @@ function UserCharacters() {
     });
 
     if (!getAccessToken()) {
-        return <div>Please log in to view the user profile.</div>;
+        return <div>Please log in to view the user's characters.</div>;
     }
     if (loading) {
         return <div>Loading user's campaigns...</div>;

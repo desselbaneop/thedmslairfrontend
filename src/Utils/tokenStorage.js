@@ -1,27 +1,28 @@
+// src/Utils/tokenStorage.js
+import {clearAuthorizedUser, clearFetchedUser, clearFetchingUser} from "./localStorage";
+
 export const getAccessToken = () => {
-    const token = localStorage.getItem('accessToken');
-    console.log('Retrieved accessToken:', token);
-    return token;
+    return localStorage.getItem('accessToken');
 };
 
 export const getRefreshToken = () => {
-    const token = localStorage.getItem('refreshToken');
-    console.log('Retrieved refreshToken:', token);
-    return token;
+    return localStorage.getItem('refreshToken');
 };
 
 export const setAccessToken = (token) => {
-    console.log('Setting accessToken:', token);
     localStorage.setItem('accessToken', token);
 };
 
 export const setRefreshToken = (token) => {
-    console.log('Setting refreshToken:', token);
     localStorage.setItem('refreshToken', token);
 };
 
-export const clearTokens = () => {
+export const clearSession = () => {
     console.log('Clearing tokens');
+    localStorage.removeItem('user');
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    clearFetchingUser();
+    clearFetchedUser();
+    clearAuthorizedUser();
 };

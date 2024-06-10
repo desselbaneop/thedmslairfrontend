@@ -1,10 +1,9 @@
 import React, {useState} from 'react';
 import {api} from "../API/api";
-import {useAtom} from "jotai";
-import {userState} from "../State/user";
+import {useSelector} from "react-redux";
 
 const JoinCampaignPopup = ({ onClose }) => {
-    const [user,] = useAtom(userState);
+    const user = useSelector(state => state.user.user);
     const [campaignId, setCampaignId] = useState('');
 
     const handleSubmit = async (e) => {

@@ -1,0 +1,93 @@
+/* src/Components/CampaignPage.css */
+
+.menu-bar {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 18px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.menu-bar a {
+    color: #000;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.character-list {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.character-card {
+    width: 200px;
+    height: 300px;
+    border: 2px solid #000;
+    position: relative;
+    background: #f8f8f8;
+}
+
+.character-card img {
+    width: 100%;
+    height: 80%;
+    object-fit: cover;
+}
+
+.character-card .character-details {
+    padding: 10px;
+    text-align: center;
+}
+
+.character-card.placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ccc;
+}
+
+.character-card::before,
+.character-card::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+}
+
+.character-card::before {
+    bottom: 0;
+    right: 0;
+    background: url('../assets/corner-top.svg') no-repeat top left;
+}
+
+.character-card::after {
+    top: 0;
+    left: 0;
+    background: url('../assets/corner-bottom.svg') no-repeat bottom right;
+}
+
+.paper-sheet {
+    width: 100%;
+    height: 200px;
+    background: url('../assets/paper.svg') no-repeat center center;
+    background-size: cover;
+    margin: 0 auto;
+}
+
+.popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}

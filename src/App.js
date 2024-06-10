@@ -1,41 +1,47 @@
 // src/App.js
-import React from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import AuthPage from "./Components/AuthPage";
-import LogoutButton from "./Components/LogoutButton";
-import UserProfile from "./Components/UserProfile";
-import HomePage from "./Components/HomePage";
-import { useAtom } from "jotai";
-import { userState } from "./State/user";
-import DashBoard from "./Components/DashBoard";
-import CharacterCreation from "./Components/CharacterCreation";
-import CampaignCreation from "./Components/CampaignCreation";
-import CampaignPage from "./Components/CampaignPage";
+import React, {useEffect} from 'react';
+import {Route, Routes, useLocation, useNavigate} from 'react-router-dom';
+import AuthPage from "./components/AuthPage";
+import LogoutButton from "./components/LogoutButton";
+import UserProfile from "./components/UserProfile";
+import HomePage from "./components/HomePage";
+import {useSelector} from 'react-redux';
+import DashBoard from "./components/Dashboard";
+import CharacterCreation from "./components/CharacterCreation";
+import CampaignCreation from "./components/CampaignCreation";
+import CampaignPage from "./components/CampaignPage";
+import useInitializeUser from "./hooks/useInitializeUser";
 
 function App() {
-    const [user,] = useAtom(userState);
+    useInitializeUser();
+
+    const user = useSelector(state => state.user.user);
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    useEffect(() => {
+        if (user && location.pathname === '/login') {
+            navigate(`/profile/${user.id}`);
+        } else if (!user && location.pathname !== '/login') {
+            navigate('/login')
+        }
+    }, [user, navigate, location]);
 
     return (
-        <div className="App">
-            <h1 className="main-header">Fantasy App</h1>
-            <Router>
-                <Routes>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/login" element={<AuthPage />} />
-                    {user && (
-                        <>
-                            <Route path="/profile/:id" element={<UserProfile />} />
-                            <Route path="/dashboard" element={<DashBoard />} />
-                            <Route path="/character-creation" element={<CharacterCreation />} />
-                            <Route path="/campaign-creation" element={<CampaignCreation />} />
-                            <Route path="/campaigns/:id" element={<CampaignPage />} />
-                        </>
-                    )}
-                </Routes>
-                {user && <LogoutButton />}
-            </Router>
-        </div>
+            <div className="App">
+                <h1 className="main-header">Fantasy App</h1>
+                    <Routes>
+                        <Route path="/" element={<HomePage />} />
+                        <Route path="/login" element={<AuthPage />} />
+                        <Route path="/profile/:id" element={<UserProfile />} />
+                        <Route path="/dashboard" element={<DashBoard />} />
+                        <Route path="/character-creation" element={<CharacterCreation />} />
+                        <Route path="/campaign-creation" element={<CampaignCreation />} />
+                        <Route path="/campaigns/:id" element={<CampaignPage />} />
+                    </Routes>
+                    <LogoutButton />
+            </div>
     );
 }
 

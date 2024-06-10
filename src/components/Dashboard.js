@@ -1,14 +1,14 @@
 import React, {useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import JoinCampaignPopup from "./JoinCampaignPopup";
-import {useAtom} from "jotai";
-import {userState} from "../State/user";
 import ChooseCampaignPopup from "./ChooseCampaignPopup";
+import {useSelector} from "react-redux";
 
 const HomePage = () => {
     const navigate = useNavigate();
     const [joinCampaignPopup, setJoinCampaignPopup] = useState(false);
     const [chooseCampaignPopup, setChooseCampaignPopup] = useState(false);
+    const user = useSelector(state => state.user.user);
 
     const handleNavigateToCampaignCreation = () => {
         navigate('/campaign-creation')

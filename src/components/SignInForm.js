@@ -1,41 +1,42 @@
+// src/Components/SignInForm.js
 import React, { useState } from 'react';
-import {api} from "../API/api";
-import {userState} from "../State/user";
+import { useNavigate } from "react-router-dom";
+import { api } from "../API/api";
+import { useDispatch } from 'react-redux';
+import { setUser } from '../slices/userSlice';
+import { setFetchingId } from "../Utils/localStorage";
+import {wait} from "@testing-library/user-event/dist/utils";
 
-const RegistrationForm = () => {
+const SignInForm = () => {
     const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState(['mod', 'user'])
     const [successMessage, setSuccessMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const userData = {
             username,
-            email,
             password,
-            role,
         };
 
         try {
-            const response = await api.auth.signup(userData);
+            const response = await api.auth.signin(userData);
 
-            if (response.ok) {
-                // Registration successful
-                setSuccessMessage('Registration successful!'); // Set success message
-                setErrorMessage(''); // Clear error message
-            } else {
-                // Registration failed
-                setSuccessMessage(''); // Clear success message
-                setErrorMessage('Registration failed. Please try again.'); // Set error message
-            }
+            // Sign-in successful
+            dispatch(setUser(response.userResponse)); // Изменение здесь
+            setSuccessMessage('Login successful!');
+            setErrorMessage('');
+            setFetchingId(response.userResponse.id);
+            navigate(`/profile/${response.userResponse.id}`);
         } catch (error) {
-            // Network error
-            setSuccessMessage(''); // Clear success message
-            setErrorMessage('An error occurred. Please check your network connection.'); // Set error message
+            // Handle sign-in failure
+            setSuccessMessage('');
+            setErrorMessage('Invalid username or password. Please try again.');
+            console.log('Error during sign-in:', error);
         }
     };
 
@@ -54,14 +55,6 @@ const RegistrationForm = () => {
                     />
                 </label>
                 <label>
-                    Email:
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                </label>
-                <label>
                     Password:
                     <input
                         type="password"
@@ -69,10 +62,10 @@ const RegistrationForm = () => {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </label>
-                <button type="submit">Register</button>
+                <button type="submit">Sign In</button>
             </form>
         </div>
     );
 };
 
-export default RegistrationForm;
+export default SignInForm;

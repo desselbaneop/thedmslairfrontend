@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../CSS/CampaignCharacter.css';
+import '../css/CampaignCharacter.css';
 
 const CampaignCharacter = ({ character }) => {
     const [isPopupOpen, setPopupOpen] = useState(false);

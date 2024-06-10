@@ -1,0 +1,146 @@
+/* CharacterCreation.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f5e9;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: 2px solid #e0c097;
+    border-radius: 10px;
+    position: relative;
+    padding-top: 60px; /* For the top menu */
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header a {
+    color: #000;
+    text-decoration: none;
+    margin: 0 10px;
+    font-size: 18px;
+}
+
+.header a:hover {
+    text-decoration: underline;
+}
+
+.character-form {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.character-form img {
+    width: 200px;
+    height: 300px;
+    border: 2px solid #e0c097;
+    border-radius: 10px;
+    background-color: #ddd; /* Placeholder for character image */
+    margin-right: 20px;
+}
+
+.character-details, .character-stats {
+    background-color: #f8ecd1;
+    padding: 20px;
+    border: 2px solid #e0c097;
+    border-radius: 10px;
+    flex-grow: 1;
+    margin-right: 20px;
+}
+
+.character-details {
+    margin-bottom: 20px;
+}
+
+.character-details h3, .character-stats h4 {
+    font-family: 'Georgia', serif;
+    color: #5b4636;
+    margin-top: 0;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #e0c097;
+    padding-bottom: 5px;
+}
+
+.character-details label, .character-stats label {
+    display: block;
+    margin-bottom: 5px;
+    color: #5b4636;
+}
+
+.character-details input, .character-stats input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.character-stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.character-stats .stat {
+    flex-basis: 30%;
+    margin-bottom: 10px;
+}
+
+.character-stats .stat label {
+    margin-bottom: 0;
+}
+
+.character-stats .stat input {
+    width: 100%;
+}
+
+.submit-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #d4a373;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    background-color: #c78b53;
+}
+
+.top-menu {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    background-color: #e0c097;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.top-menu a {
+    color: #5b4636;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 18px;
+}
+
+.top-menu a:hover {
+    text-decoration: underline;
+}
